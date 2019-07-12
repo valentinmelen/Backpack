@@ -57,10 +57,10 @@ public class Backpack {
         return itemList.size();
     }
 
-    public void addFraction(Item item) {
+    public boolean addFraction(Item item) {
         double availableCapacity = getAvailableCapacity();
         if (availableCapacity == 0) {
-            return;
+            return false;
         }
         if (availableCapacity >= item.getWeight()) {
             itemList.add(item);
@@ -69,5 +69,6 @@ public class Backpack {
                     availableCapacity * item.getValue() / item.getWeight());
             itemList.add(fractionItem);
         }
+        return true;
     }
 }

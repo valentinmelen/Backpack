@@ -81,60 +81,40 @@ public class Problem {
 
     public void moveFractionItemsToBackpack() {
         Set<Item> itemSet = new TreeSet<>(availableItems);
-        for (Item item : itemSet) {
-            backpack.addFraction(item);
-            availableItems.remove(item);
-        }
-    }
-
-    public Map getNameAndNumberOfEachAvailableItem() {
-
-        Map<String, Integer> map = new HashMap<>();
-
-        for(Item item : availableItems){
-            Integer counter=0;
-            counter = map.get(item.getName());
-            if(counter ==null){
-                map.put(item.getName(),1);
-            }else {
-                counter++;
-                map.put(item.getName(),counter);
+        for (Item currentItem : itemSet) {
+            if (backpack.addFraction(currentItem)) {
+                availableItems.remove(currentItem);
             }
         }
-        return map;
     }
 
-    public Map getAveragePriceForEachTypeOfItem(){
-
-        Map<String, Double> map = new HashMap<>();
-        Map<String, Integer> mapNameAndNumbers = getNameAndNumberOfEachAvailableItem();
-        for(Item item : availableItems){
-            Double avg=0.0;
-            avg = map.get(item.getName());
-            if(avg ==null){
-                avg = item.getValue();
-            }else {
-                avg *=mapNameAndNumbers.get(item.getName());
-                avg+=item.getValue();
-
+    public void showTotalValueForEachItem() {
+        Map<String, Integer> itemsByCount = new HashMap<>();
+        Map<String, Double> itemsByValue = new HashMap<>();
+        for (int index = 0; index < availableItems.size(); index++) {
+            Item currentItem = availableItems.get(index);
+            String currentItemName = currentItem.getName();
+            Double currentItemValue = currentItem.getValue();
+            Double beforeItemValue = itemsByValue.get(currentItemName);
+            Integer beforeItemCount = itemsByCount.get(currentItemName);
+            if (beforeItemValue == null) {
+                beforeItemValue = 0.0;
+                beforeItemCount = 0;
             }
-            map.put(item.getName(),avg/mapNameAndNumbers.get(item.getName()));
-        }
-        return map;
-    }
-    public void display(){
-        Map<String,Double> map = getNameAndNumberOfEachAvailableItem();
-
-        for(String itemOfName: map.keySet()){
-            System.out.println(itemOfName +":"+map.get(itemOfName));
+            itemsByValue.put(currentItemName, beforeItemValue + currentItemValue);
+            itemsByCount.put(currentItemName, beforeItemCount + 1);
         }
 
-        Map<String,Integer> map2 = getAveragePriceForEachTypeOfItem();
-        System.out.println();
-        for(String itemOfName: map2.keySet()){
-            System.out.println(itemOfName +":"+map2.get(itemOfName));
+        for (Map.Entry<String, Double> entry : itemsByValue.entrySet()) {
+            Integer countForEach = itemsByCount.get(entry.getKey());
+            System.out.println(
+                    "key: " + entry.getKey() + " value: " + entry.getValue() + " in total: " + countForEach
+                            + " average: " + (entry.getValue() / countForEach));
+
+
         }
     }
+
 }
 
 

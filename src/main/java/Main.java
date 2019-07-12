@@ -10,8 +10,9 @@ public class Main {
         problem.setBackpack(new Backpack(12));
         List<Item> generatedItems = Util.generateItems(100);
         problem.setAvailableItems(generatedItems);
+        problem.showTotalValueForEachItem();
 
-        System.out.println("SORTATED BY PROFIT");
+        System.out.println("\nSORTATED BY PROFIT");
         problem.moveProfitableItemsToBackpack();
         displayToConsole(problem);
 
@@ -25,17 +26,10 @@ public class Main {
         problem.moveLightItemsToBackpack();
         displayToConsole(problem);
 
-        List<Item> aux= new LinkedList<>(generatedItems);
         System.out.println("FRACTION OF OBJECTS");
         problem.setBackpack(new Backpack(12));//RESETAM RUCSACUL
         problem.moveFractionItemsToBackpack();
         displayToConsole(problem);
-
-        problem.setAvailableItems(aux);
-        problem.display();
-
-
-
     }
 
     private static void displayToConsole(Problem problem) {
